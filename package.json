@@ -1,0 +1,16 @@
+{
+  "name": "adv",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx tsx --test */*.spec.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "20.10.1",
+    "tsx": "4.6.1"
+  }
+}
