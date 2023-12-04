@@ -1,5 +1,7 @@
-export const textToNumber = (text: string) => {
-  const numbers = {
+type Numbers = Record<string, number>;
+
+export const textToNumber = (text: string): number => {
+  const numbers: Numbers = {
     one: 1,
     two: 2,
     three: 3,
@@ -10,5 +12,5 @@ export const textToNumber = (text: string) => {
     eight: 8,
     nine: 9,
   };
-  return numbers[text];
+  return numbers[text] as number;
 };
