@@ -144,7 +144,7 @@ describe("cubeConundrum()", () => {
       { red: 20, green: 13, blue: 6 },
     ],
   ] as [CubeObject[], CubeObject][])
-    test("blablabl", () => {
+    test("should find the biggest numbers for each color", () => {
       assert.deepStrictEqual(findBiggestNumberForEachColor(input), expected);
     });
 });
