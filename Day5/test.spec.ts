@@ -4,15 +4,17 @@ import * as fs from "fs";
 
 const exInput = fs.readFileSync("./Day5/exampleInput.txt", "utf-8");
 const realInput = fs.readFileSync("./Day5/input.txt", "utf-8");
+export type Map = Array<[number, number, number]>;
 
 describe("SeedFertilizer()", () => {
-  test("", () => {
-    assert.equal(getMaps(exInput), 0);
+  test("Should find closest location.", () => {
+    assert.equal(smartMainfunction(exInput), 35);
   });
-  test("", () => {
-    assert.equal(smartMainfunction(exInput), 0);
+  test("Should find closest location.", () => {
+    assert.equal(smartMainfunction(realInput), 324724204);
   });
-  const seedToSoilMap = [
+
+  const seedToSoilMap: Map = [
     [50, 98, 2],
     [52, 50, 48],
   ];
@@ -26,7 +28,7 @@ describe("SeedFertilizer()", () => {
       assert.equal(seedToSoil(seed, seedToSoilMap), soil);
     });
   }
-  const soilToFertiliserMap = [
+  const soilToFertiliserMap: Map = [
     [0, 15, 37],
     [37, 52, 2],
     [39, 0, 15],
@@ -41,7 +43,7 @@ describe("SeedFertilizer()", () => {
       assert.equal(seedToSoil(soil, soilToFertiliserMap), fertilizer);
     });
   }
-  const fertilizerToWaterMap = [
+  const fertilizerToWaterMap: Map = [
     [49, 53, 8],
     [0, 11, 42],
     [42, 0, 7],
@@ -57,7 +59,7 @@ describe("SeedFertilizer()", () => {
       assert.equal(seedToSoil(fertilizer, fertilizerToWaterMap), water);
     });
   }
-  const waterToLightMap = [
+  const waterToLightMap: Map = [
     [88, 18, 7],
     [18, 25, 70],
   ];
@@ -71,7 +73,7 @@ describe("SeedFertilizer()", () => {
       assert.equal(seedToSoil(water, waterToLightMap), light);
     });
   }
-  const lightToTempMap = [
+  const lightToTempMap: Map = [
     [45, 77, 23],
     [81, 45, 19],
     [68, 64, 13],
@@ -86,7 +88,7 @@ describe("SeedFertilizer()", () => {
       assert.equal(seedToSoil(light, lightToTempMap), temp);
     });
   }
-  const tempToHumidityMap = [
+  const tempToHumidityMap: Map = [
     [0, 69, 1],
     [1, 0, 69],
   ];
@@ -100,7 +102,7 @@ describe("SeedFertilizer()", () => {
       assert.equal(seedToSoil(temp, tempToHumidityMap), humidity);
     });
   }
-  const humidityToLocation = [
+  const humidityToLocation: Map = [
     [60, 56, 37],
     [56, 93, 4],
   ];
@@ -127,33 +129,27 @@ const names = [
 ];
 
 export type Seeds = Record<number, number>;
-export const seedToSoil = (seed: number, seedToSoilMap: number[][]): number => {
-  const seeds: Seeds = {};
-
+export const seedToSoil = (
+  seed: number,
+  seedToSoilMap: Array<[number, number, number]>
+): number => {
+  let finalResult = 0;
   seedToSoilMap.forEach((map) => {
     const dest = map[0];
     const source = map[1];
     const range = map[2];
-    /*let additionValue = 0;
-    for (let step = map[1]; step < map[1] + map[2]; step++) {
-      seeds[step as keyof Seeds] = map[0] + additionValue;
-      additionValue += 1;
-    }*/
-    let line = 0;
     if (seed === source) {
-      return dest;
-    } else if (seed > source && seed < source + range) {
+      finalResult = dest;
+    }
+    if (seed > source && seed < source + range) {
       let result = seed - source + dest;
-      return result;
-    } else {
-      if (line + 1 >= map.length) {
-        return seed;
-      } else {
-        return seedToSoil(line + 1, seed, "soil");
-      }
+      finalResult = result;
+    }
+    if (finalResult === 0) {
+      finalResult = seed;
     }
   });
-  return seeds[seed] ?? seed;
+  return finalResult;
 };
 export const getMaps = (input: string) => {
   const allInformation: Record<string, string[][] | string[]> = {};
@@ -203,7 +199,8 @@ const smartMainfunction = (input: string) => {
       values.push(seedToSoil(val, nameMap));
     });
     prevVal = values;
-    console.log(name, values);
+    console.log("console.log", name, values);
+    console.log("min-value:", Math.min.apply(Math, values));
   });
-  return 1;
+  return Math.min.apply(Math, prevVal);
 };
